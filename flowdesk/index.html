@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlowDesk – AI-Powered Project Management</title>
+  <meta name="description" content="FlowDesk helps modern teams plan, collaborate, and ship faster with AI-powered project management. Deliver 3x more with half the effort." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #7c3aed;
+      --purple-light: #a78bfa;
+      --purple-dark: #4c1d95;
+      --pink: #ec4899;
+      --bg: #09090f;
+      --surface: #111118;
+      --surface2: #1a1a27;
+      --border: rgba(124,58,237,0.15);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 5%;
+      backdrop-filter: blur(20px);
+      background: rgba(9,9,15,0.85);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-size: 1.4rem; font-weight: 800; background: linear-gradient(135deg, #a78bfa, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.5px; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { display: flex; gap: 12px; align-items: center; }
+    .btn-ghost { background: none; border: 1px solid var(--border); color: var(--muted); padding: 9px 20px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: all .2s; font-family: inherit; }
+    .btn-ghost:hover { border-color: var(--purple-light); color: var(--text); }
+    .btn-primary { background: linear-gradient(135deg, var(--purple), var(--pink)); color: #fff; border: none; padding: 10px 24px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all .2s; font-family: inherit; box-shadow: 0 0 20px rgba(124,58,237,0.3); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(124,58,237,0.5); }
+
+    /* ---- HERO ---- */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 5% 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -100px; right: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
+      padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; color: var(--purple-light);
+      margin-bottom: 28px; font-weight: 500;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple-light); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    h1 {
+      font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 900; line-height: 1.08; letter-spacing: -2px;
+      margin-bottom: 24px; max-width: 800px;
+    }
+    h1 span { background: linear-gradient(135deg, #a78bfa 0%, #ec4899 50%, #f97316 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { font-size: 1.2rem; color: var(--muted); max-width: 560px; margin-bottom: 44px; line-height: 1.7; }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .btn-hero { background: linear-gradient(135deg, var(--purple), var(--pink)); color: #fff; border: none; padding: 16px 36px; border-radius: 12px; cursor: pointer; font-size: 1rem; font-weight: 700; transition: all .25s; font-family: inherit; box-shadow: 0 4px 30px rgba(124,58,237,0.4); }
+    .btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(124,58,237,0.6); }
+    .btn-hero-secondary { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--border); padding: 16px 36px; border-radius: 12px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: all .25s; font-family: inherit; }
+    .btn-hero-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-1px); }
+    .hero-stats { display: flex; gap: 48px; margin-top: 64px; flex-wrap: wrap; justify-content: center; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #a78bfa, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+    /* ---- FEATURES ---- */
+    section { padding: 100px 5%; }
+    .section-tag { color: var(--purple-light); font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+    .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+    .section-sub { color: var(--muted); font-size: 1.05rem; max-width: 560px; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 60px; }
+    .feature-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 32px; transition: all .3s; position: relative; overflow: hidden;
+    }
+    .feature-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background: linear-gradient(90deg, var(--purple), var(--pink)); opacity:0; transition:.3s; }
+    .feature-card:hover { transform: translateY(-4px); border-color: rgba(124,58,237,0.4); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon { width: 52px; height: 52px; border-radius: 12px; background: rgba(124,58,237,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; }
+    .feature-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+    .feature-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+    /* ---- DASHBOARD MOCKUP ---- */
+    .dashboard-section { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .dashboard-mock {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+      padding: 24px; position: relative;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,58,237,0.1);
+    }
+    .mock-bar { display: flex; gap: 6px; margin-bottom: 16px; }
+    .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mock-dot:nth-child(1){background:#ef4444;} .mock-dot:nth-child(2){background:#f59e0b;} .mock-dot:nth-child(3){background:#22c55e;}
+    .mock-row { height: 10px; border-radius: 4px; background: var(--surface2); margin-bottom: 10px; }
+    .mock-row.short { width: 60%; }
+    .mock-row.medium { width: 80%; }
+    .mock-row.full { width: 100%; }
+    .mock-row.accent { background: linear-gradient(90deg, var(--purple), var(--pink)); opacity: 0.7; }
+    .mock-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .mock-card { background: var(--surface2); border-radius: 10px; padding: 16px; border: 1px solid var(--border); }
+    .mock-card-title { height: 8px; background: var(--muted); border-radius: 4px; width: 60%; margin-bottom: 10px; opacity: 0.4; }
+    .mock-card-bar { height: 6px; border-radius: 3px; margin-bottom: 6px; }
+    .mock-card-bar.b1 { background: var(--purple); width: 80%; }
+    .mock-card-bar.b2 { background: var(--pink); width: 55%; }
+    .mock-card-bar.b3 { background: #f97316; width: 70%; }
+    .progress-circle { width: 60px; height: 60px; border-radius: 50%; border: 4px solid var(--surface2); border-top-color: var(--purple); animation: spin 2s linear infinite; margin: 16px auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ---- PRICING ---- */
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+    .pricing-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px; transition: all .3s; }
+    .pricing-card.featured { border-color: var(--purple); background: rgba(124,58,237,0.08); position: relative; }
+    .pricing-card.featured::before { content: 'Most Popular'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--purple), var(--pink)); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 4px 16px; border-radius: 100px; white-space: nowrap; }
+    .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+    .plan-name { font-size: 0.9rem; font-weight: 600; color: var(--muted); margin-bottom: 8px; }
+    .plan-price { font-size: 3rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 4px; }
+    .plan-price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+    .plan-desc { color: var(--muted); font-size: 0.85rem; margin-bottom: 28px; }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .plan-features li { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--muted); }
+    .plan-features li::before { content: '✓'; color: var(--purple-light); font-weight: 700; font-size: 1rem; }
+    .btn-plan { width: 100%; padding: 14px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 600; font-family: inherit; transition: all .2s; }
+    .btn-plan-outlined { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-plan-outlined:hover { border-color: var(--purple-light); }
+    .btn-plan-solid { background: linear-gradient(135deg, var(--purple), var(--pink)); border: none; color: #fff; box-shadow: 0 4px 20px rgba(124,58,237,0.3); }
+    .btn-plan-solid:hover { box-shadow: 0 4px 30px rgba(124,58,237,0.5); transform: translateY(-1px); }
+
+    /* ---- TESTIMONIALS ---- */
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+    .testimonial { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+    .stars { color: #f59e0b; font-size: 0.9rem; margin-bottom: 14px; }
+    .testimonial-text { color: var(--muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .author-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; color: #fff; }
+    .author-name { font-weight: 600; font-size: 0.9rem; }
+    .author-role { font-size: 0.8rem; color: var(--muted); }
+
+    /* ---- CTA SECTION ---- */
+    .cta-section { text-align: center; }
+    .cta-card {
+      background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(236,72,153,0.1));
+      border: 1px solid rgba(124,58,237,0.3); border-radius: 24px;
+      padding: 80px 5%; position: relative; overflow: hidden;
+    }
+    .cta-card::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:500px; height:500px; background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%); pointer-events:none; }
+    .cta-card h2 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900; letter-spacing: -1px; margin-bottom: 16px; }
+    .cta-card p { color: var(--muted); font-size: 1.1rem; margin-bottom: 36px; }
+
+    /* ---- FOOTER ---- */
+    footer {
+      border-top: 1px solid var(--border); padding: 60px 5% 40px;
+      display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 40px;
+    }
+    .footer-brand p { color: var(--muted); font-size: 0.85rem; line-height: 1.7; margin-top: 12px; max-width: 280px; }
+    .footer-col h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color .2s; }
+    .footer-col a:hover { color: var(--text); }
+    .footer-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 0.8rem; grid-column: 1 / -1; }
+
+    /* ---- AI CHATBOT ---- */
+    #chat-toggle {
+      position: fixed; bottom: 30px; right: 30px; z-index: 1000;
+      width: 60px; height: 60px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 30px rgba(124,58,237,0.5); transition: all .3s; font-size: 1.5rem;
+    }
+    #chat-toggle:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(124,58,237,0.7); }
+    #chat-toggle .chat-pulse {
+      position: absolute; top: -2px; right: -2px; width: 14px; height: 14px;
+      border-radius: 50%; background: #22c55e; border: 2px solid var(--bg);
+      animation: pulse 2s infinite;
+    }
+
+    #chatbox {
+      position: fixed; bottom: 105px; right: 30px; z-index: 999;
+      width: 380px; max-height: 580px;
+      background: var(--surface); border: 1px solid rgba(124,58,237,0.3); border-radius: 20px;
+      display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+      transform: scale(0.8) translateY(20px); opacity: 0;
+      transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+    #chatbox.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+
+    .chat-header {
+      padding: 20px 20px 16px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(236,72,153,0.1));
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .chat-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;
+    }
+    .chat-header-info h3 { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+    .chat-header-info p { font-size: 0.75rem; color: #22c55e; }
+    .chat-close { margin-left: auto; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.2rem; padding: 4px; transition: color .2s; }
+    .chat-close:hover { color: var(--text); }
+
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px;
+      scroll-behavior: smooth;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .msg { max-width: 85%; animation: msgIn .3s ease; }
+    @keyframes msgIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    .msg.bot { align-self: flex-start; }
+    .msg.user { align-self: flex-end; }
+    .msg-bubble {
+      padding: 12px 16px; border-radius: 16px; font-size: 0.88rem; line-height: 1.6;
+    }
+    .msg.bot .msg-bubble { background: var(--surface2); border: 1px solid var(--border); border-bottom-left-radius: 4px; color: var(--text); }
+    .msg.user .msg-bubble { background: linear-gradient(135deg, var(--purple), var(--pink)); color: #fff; border-bottom-right-radius: 4px; }
+
+    .chat-quick-replies { padding: 0 16px 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .quick-reply { background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.3); color: var(--purple-light); padding: 6px 14px; border-radius: 100px; font-size: 0.78rem; cursor: pointer; transition: all .2s; font-family: inherit; }
+    .quick-reply:hover { background: rgba(124,58,237,0.25); }
+
+    .chat-input-area { padding: 16px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-end; }
+    #chat-input {
+      flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 12px 14px; color: var(--text); font-family: inherit; font-size: 0.88rem;
+      resize: none; min-height: 44px; max-height: 120px; outline: none; transition: border-color .2s;
+    }
+    #chat-input:focus { border-color: var(--purple); }
+    #chat-input::placeholder { color: var(--muted); }
+    #chat-send {
+      background: linear-gradient(135deg, var(--purple), var(--pink)); border: none; border-radius: 10px;
+      width: 44px; height: 44px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all .2s; flex-shrink: 0;
+    }
+    #chat-send:hover { transform: scale(1.05); }
+    #chat-send svg { fill: white; }
+
+    .typing { display: flex; align-items: center; gap: 4px; padding: 12px 16px; background: var(--surface2); border-radius: 16px; border-bottom-left-radius: 4px; width: fit-content; border: 1px solid var(--border); }
+    .typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: typing-dot 1.3s infinite; }
+    .typing span:nth-child(2){animation-delay:.2s;} .typing span:nth-child(3){animation-delay:.4s;}
+    @keyframes typing-dot { 0%,60%,100%{opacity:.2;transform:scale(1);} 30%{opacity:1;transform:scale(1.3);} }
+
+    @media (max-width: 768px) {
+      .dashboard-section { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      #chatbox { width: calc(100vw - 40px); right: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">⚡ FlowDesk</div>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <div class="nav-cta">
+    <button class="btn-ghost">Sign In</button>
+    <button class="btn-primary">Start Free Trial</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge"><span class="badge-dot"></span> New: AI Task Automation is here</div>
+  <h1>Manage projects<br /><span>10x smarter</span> with AI</h1>
+  <p class="hero-sub">FlowDesk unifies your team's work, automates routine tasks, and gives you real-time insights — so you ship faster and stress less.</p>
+  <div class="hero-btns">
+    <button class="btn-hero">Start Free — No Credit Card</button>
+    <button class="btn-hero-secondary">▶ Watch Demo</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">50K+</div><div class="stat-label">Teams worldwide</div></div>
+    <div class="stat"><div class="stat-num">3x</div><div class="stat-label">Faster delivery</div></div>
+    <div class="stat"><div class="stat-num">92%</div><div class="stat-label">Customer satisfaction</div></div>
+    <div class="stat"><div class="stat-num">$2.4M</div><div class="stat-label">Saved annually per team</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-tag">Features</div>
+  <div style="max-width:700px">
+    <div class="section-title">Everything your team needs<br /><span style="color:var(--purple-light)">built in one place</span></div>
+    <p class="section-sub">From planning to shipping, FlowDesk handles the heavy lifting so your team can focus on what matters most.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🤖</div>
+      <div class="feature-title">AI Task Generator</div>
+      <div class="feature-desc">Describe your goal in plain English and watch AI break it down into actionable tasks, sub-tasks, and milestones automatically.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Real-Time Dashboards</div>
+      <div class="feature-desc">Live burndown charts, velocity tracking, and capacity planning give stakeholders instant visibility into project health.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔗</div>
+      <div class="feature-title">200+ Integrations</div>
+      <div class="feature-desc">Connect Slack, GitHub, Figma, Google Drive, Jira and 200+ more tools your team already uses without missing a beat.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Smart Automation</div>
+      <div class="feature-desc">Build no-code automation workflows that handle status updates, notifications, and recurring tasks on autopilot.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛡️</div>
+      <div class="feature-title">Enterprise Security</div>
+      <div class="feature-desc">SOC2 Type II certified, GDPR compliant, SSO, and role-based permissions give your team enterprise-grade peace of mind.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <div class="feature-title">Contextual Collaboration</div>
+      <div class="feature-desc">Comment directly on tasks, tag teammates, share files and hold async standups — all in one threaded timeline.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" style="background: linear-gradient(180deg, transparent, rgba(124,58,237,0.04));">
+  <div class="dashboard-section">
+    <div>
+      <div class="section-tag">How It Works</div>
+      <div class="section-title">A workspace that<br />thinks with you</div>
+      <p style="color:var(--muted); margin-top:16px; margin-bottom:32px; font-size:1rem; line-height:1.8;">FlowDesk's AI layer sits on top of your entire project graph — understanding context, predicting blockers, and surfacing the right information at the right time.</p>
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:8px;background:rgba(124,58,237,0.2);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--purple-light);flex-shrink:0;">1</div>
+          <div><strong>Connect your tools</strong><p style="color:var(--muted);font-size:0.88rem;margin-top:4px;">Integrate in 2 minutes. FlowDesk pulls all context from your existing stack.</p></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:8px;background:rgba(236,72,153,0.2);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--pink);flex-shrink:0;">2</div>
+          <div><strong>AI plans your sprint</strong><p style="color:var(--muted);font-size:0.88rem;margin-top:4px;">Describe your goals; AI generates structured tasks, estimates, and assigns them.</p></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:8px;background:rgba(249,115,22,0.2);display:flex;align-items:center;justify-content:center;font-weight:700;color:#f97316;flex-shrink:0;">3</div>
+          <div><strong>Ship on time, every time</strong><p style="color:var(--muted);font-size:0.88rem;margin-top:4px;">Get smart nudges, risk alerts and retrospective summaries automatically.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="dashboard-mock">
+      <div class="mock-bar"><div class="mock-dot"></div><div class="mock-dot"></div><div class="mock-dot"></div></div>
+      <div class="mock-row full"></div>
+      <div class="mock-row medium accent"></div>
+      <div class="mock-row short"></div>
+      <div class="mock-cards">
+        <div class="mock-card">
+          <div class="mock-card-title"></div>
+          <div class="mock-card-bar b1"></div>
+          <div class="mock-card-bar b2"></div>
+          <div class="mock-card-bar b3"></div>
+        </div>
+        <div class="mock-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div class="progress-circle"></div>
+          <div style="height:6px;background:rgba(124,58,237,0.3);border-radius:3px;width:70%;"></div>
+        </div>
+        <div class="mock-card" style="grid-column: span 2;">
+          <div class="mock-card-title"></div>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <div style="flex:3;height:8px;border-radius:4px;background:var(--purple);opacity:0.8;"></div>
+            <div style="flex:2;height:8px;border-radius:4px;background:var(--pink);opacity:0.8;"></div>
+            <div style="flex:1;height:8px;border-radius:4px;background:#f97316;opacity:0.8;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div style="text-align:center">
+    <div class="section-tag" style="text-align:center">Pricing</div>
+    <div class="section-title">Simple, transparent pricing</div>
+    <p style="color:var(--muted);font-size:1rem;margin-top:8px;">Start free. Scale as you grow. No hidden fees, ever.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price">$0 <span>/ mo</span></div>
+      <div class="plan-desc">Perfect for freelancers and small projects</div>
+      <ul class="plan-features">
+        <li>Up to 5 projects</li><li>3 team members</li><li>Basic AI suggestions</li><li>2GB storage</li><li>Email support</li>
+      </ul>
+      <button class="btn-plan btn-plan-outlined">Get Started Free</button>
+    </div>
+    <div class="pricing-card featured">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">$29 <span>/ mo</span></div>
+      <div class="plan-desc">For growing teams that need more power</div>
+      <ul class="plan-features">
+        <li>Unlimited projects</li><li>25 team members</li><li>Full AI automation</li><li>100GB storage</li><li>Priority support 24/7</li><li>Advanced analytics</li>
+      </ul>
+      <button class="btn-plan btn-plan-solid">Start 14-Day Trial</button>
+    </div>
+    <div class="pricing-card">
+      <div class="plan-name">Enterprise</div>
+      <div class="plan-price">$99 <span>/ mo</span></div>
+      <div class="plan-desc">For large organizations with custom needs</div>
+      <ul class="plan-features">
+        <li>Unlimited everything</li><li>SSO + SAML</li><li>Custom AI models</li><li>Dedicated CSM</li><li>SLA guarantee</li><li>On-prem option</li>
+      </ul>
+      <button class="btn-plan btn-plan-outlined">Contact Sales</button>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div style="text-align:center">
+    <div class="section-tag" style="text-align:center">Testimonials</div>
+    <div class="section-title">Loved by 50,000+ teams</div>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-text">"FlowDesk cut our project delivery time by 40%. The AI task generator alone saves us hours every sprint planning session."</div>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:linear-gradient(135deg,#7c3aed,#ec4899)">S</div>
+        <div><div class="author-name">Sarah Chen</div><div class="author-role">CTO, Finova Inc.</div></div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-text">"We replaced 5 different tools with just FlowDesk. Best decision we made this year. Our team absolutely loves it."</div>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:linear-gradient(135deg,#059669,#3b82f6)">M</div>
+        <div><div class="author-name">Marcus Rodriguez</div><div class="author-role">PM Lead, Stripe</div></div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-text">"The real-time dashboards changed everything for our stakeholder reporting. No more manual updates — it all flows automatically."</div>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:linear-gradient(135deg,#f97316,#ec4899)">P</div>
+        <div><div class="author-name">Priya Nair</div><div class="author-role">Director of Ops, Notion</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-card">
+    <h2>Ready to <span style="background:linear-gradient(135deg,#a78bfa,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">transform</span><br />how your team works?</h2>
+    <p>Join 50,000+ teams already using FlowDesk. Start your free 14-day trial today.</p>
+    <button class="btn-hero">Get Started for Free →</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <div class="logo">⚡ FlowDesk</div>
+    <p>AI-powered project management for modern teams. Plan smarter, collaborate better, ship faster.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Product</h4>
+    <ul><li><a href="#">Features</a></li><li><a href="#">Pricing</a></li><li><a href="#">Changelog</a></li><li><a href="#">Roadmap</a></li></ul>
+  </div>
+  <div class="footer-col">
+    <h4>Company</h4>
+    <ul><li><a href="#">About</a></li><li><a href="#">Blog</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li></ul>
+  </div>
+  <div class="footer-col">
+    <h4>Legal</h4>
+    <ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Security</a></li><li><a href="#">GDPR</a></li></ul>
+  </div>
+  <div class="footer-bottom">© 2024 FlowDesk Inc. All rights reserved. Built with ❤️ for productive teams.</div>
+</footer>
+
+<!-- AI CHATBOT -->
+<button id="chat-toggle" onclick="toggleChat()">
+  💬
+  <div class="chat-pulse"></div>
+</button>
+
+<div id="chatbox">
+  <div class="chat-header">
+    <div class="chat-avatar">🤖</div>
+    <div class="chat-header-info">
+      <h3>FlowAI Assistant</h3>
+      <p>● Online — powered by Kimi K2</p>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg bot">
+      <div class="msg-bubble">👋 Hi! I'm FlowAI, your intelligent assistant. I can help you with FlowDesk features, pricing, or anything about project management. What would you like to know?</div>
+    </div>
+  </div>
+  <div class="chat-quick-replies" id="quick-replies">
+    <button class="quick-reply" onclick="sendQuick('How does AI task generation work?')">AI Tasks</button>
+    <button class="quick-reply" onclick="sendQuick('What are your pricing plans?')">Pricing</button>
+    <button class="quick-reply" onclick="sendQuick('Can I integrate with Slack?')">Integrations</button>
+    <button class="quick-reply" onclick="sendQuick('Start a free trial')">Free Trial</button>
+  </div>
+  <div class="chat-input-area">
+    <textarea id="chat-input" placeholder="Type a message..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <button id="chat-send" onclick="sendMessage()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  // 🔐 API key is stored securely in server.js — never exposed here
+  const MODEL = 'moonshotai/kimi-k2-instruct';
+  const API_URL = '/api/chat';
+
+  const SYSTEM_PROMPT = `You are FlowAI, the friendly and knowledgeable AI assistant for FlowDesk — a premium AI-powered project management SaaS platform. 
+
+FlowDesk key features:
+- AI task generation from natural language descriptions
+- Real-time dashboards with burndown charts and velocity tracking
+- 200+ integrations (Slack, GitHub, Figma, Jira, Google Drive, etc.)
+- Smart automation workflows (no-code)
+- SOC2 Type II certified, GDPR compliant
+- Contextual collaboration tools
+
+Pricing:
+- Starter: Free (5 projects, 3 members, basic AI)
+- Pro: $29/mo (unlimited projects, 25 members, full AI, 100GB)
+- Enterprise: $99/mo (unlimited, SSO, custom AI, dedicated CSM)
+
+Be helpful, concise, enthusiastic about FlowDesk, and always encourage users to start a free trial. Keep responses to 2-3 sentences max unless more detail is truly needed.`;
+
+  let chatHistory = [];
+  let isOpen = false;
+
+  function toggleChat() {
+    isOpen = !isOpen;
+    document.getElementById('chatbox').classList.toggle('open', isOpen);
+    document.getElementById('chat-toggle').innerHTML = isOpen ? '✕<div class="chat-pulse"></div>' : '💬<div class="chat-pulse"></div>';
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  }
+
+  function autoResize(el) {
+    el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  }
+
+  function sendQuick(text) {
+    document.getElementById('chat-input').value = text;
+    sendMessage();
+    document.getElementById('quick-replies').style.display = 'none';
+  }
+
+  function appendMsg(role, text) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `msg ${role}`;
+    msgDiv.innerHTML = `<div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div>`;
+    document.getElementById('chat-messages').appendChild(msgDiv);
+    document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+    return msgDiv;
+  }
+
+  function showTyping() {
+    const t = document.createElement('div');
+    t.className = 'msg bot'; t.id = 'typing-indicator';
+    t.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+    document.getElementById('chat-messages').appendChild(t);
+    document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('typing-indicator');
+    if (t) t.remove();
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = ''; input.style.height = 'auto';
+    appendMsg('user', text);
+    chatHistory.push({ role: 'user', content: text });
+    showTyping();
+
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: MODEL,
+          messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...chatHistory],
+          temperature: 0.7, max_tokens: 300
+        })
+      });
+
+      const data = await response.json();
+      removeTyping();
+
+      if (data.choices && data.choices[0]) {
+        const reply = data.choices[0].message.content;
+        chatHistory.push({ role: 'assistant', content: reply });
+        appendMsg('bot', reply);
+      } else {
+        appendMsg('bot', "I'm having a quick moment — please try again! 😊");
+      }
+    } catch (err) {
+      removeTyping();
+      appendMsg('bot', "Connection hiccup! Please check your network and try again.");
+    }
+  }
+</script>
+</body>
+</html>

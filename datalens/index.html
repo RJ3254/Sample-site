@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataLens – Business Intelligence & Analytics SaaS</title>
+  <meta name="description" content="DataLens turns your raw data into actionable business insights with AI-powered dashboards, predictive analytics, and real-time reporting." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --amber: #d97706; --amber-light: #fbbf24; --amber-dark: #92400e;
+      --rose: #e11d48; --rose-light: #fb7185;
+      --bg: #0c0a00; --surface: #141007; --surface2: #1e1a08;
+      --border: rgba(217,119,6,0.15); --text: #fef9ee; --muted: #9ca3af;
+      --radius: 16px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 5%; backdrop-filter: blur(20px);
+      background: rgba(12,10,0,0.9); border-bottom: 1px solid var(--border);
+    }
+    .logo { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
+    .logo .d { color: var(--amber-light); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { display: flex; gap: 12px; }
+    .btn-g { background: none; border: 1px solid var(--border); color: var(--muted); padding: 9px 20px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: all .2s; font-family: inherit; }
+    .btn-g:hover { border-color: var(--amber-light); color: var(--text); }
+    .btn-p { background: linear-gradient(135deg, var(--amber), #f59e0b); color: #000; border: none; padding: 10px 24px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 700; transition: all .2s; font-family: inherit; }
+    .btn-p:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(217,119,6,0.4); }
+
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; padding: 120px 5% 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before { content:''; position:absolute; top:-100px; left:50%; transform:translateX(-50%); width:800px; height:600px; background:radial-gradient(ellipse, rgba(217,119,6,0.18) 0%, transparent 65%); pointer-events:none; }
+    .hero::after { content:''; position:absolute; bottom:0; right:-200px; width:500px; height:400px; background:radial-gradient(ellipse, rgba(225,29,72,0.1) 0%, transparent 65%); pointer-events:none; }
+
+    .badge { display:inline-flex; align-items:center; gap:8px; background:rgba(217,119,6,0.1); border:1px solid rgba(217,119,6,0.3); padding:6px 16px; border-radius:100px; font-size:0.8rem; color:var(--amber-light); margin-bottom:28px; font-weight:500; position:relative; }
+    h1 { font-size:clamp(2.8rem,6vw,5rem); font-weight:900; line-height:1.08; letter-spacing:-2px; margin-bottom:24px; max-width:820px; position:relative; }
+    h1 .gr { background:linear-gradient(90deg, var(--amber-light), var(--rose-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hero-sub { font-size:1.15rem; color:var(--muted); max-width:580px; margin-bottom:44px; line-height:1.75; position:relative; }
+    .hero-actions { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; position:relative; }
+    .btn-hm { background:linear-gradient(135deg,var(--amber),#f59e0b); color:#000; border:none; padding:16px 36px; border-radius:12px; font-family:inherit; font-size:1rem; font-weight:800; cursor:pointer; transition:all .25s; box-shadow:0 4px 24px rgba(217,119,6,0.4); }
+    .btn-hm:hover { transform:translateY(-2px); box-shadow:0 8px 36px rgba(217,119,6,0.6); }
+    .btn-ho { background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--text); padding:16px 36px; border-radius:12px; font-family:inherit; font-size:1rem; font-weight:600; cursor:pointer; transition:all .25s; }
+    .btn-ho:hover { background:rgba(255,255,255,0.08); }
+
+    .hero-stats { display:flex; gap:48px; margin-top:60px; flex-wrap:wrap; justify-content:center; position:relative; }
+    .hs { text-align:center; }
+    .hs-n { font-size:2.2rem; font-weight:900; background:linear-gradient(90deg,var(--amber-light),var(--rose-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hs-l { font-size:0.8rem; color:var(--muted); margin-top:2px; }
+
+    section { padding:100px 5%; }
+    .st { color:var(--amber-light); font-size:0.78rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
+    .stit { font-size:clamp(2rem,4vw,3rem); font-weight:800; letter-spacing:-1px; margin-bottom:14px; }
+    .ssub { color:var(--muted); font-size:1rem; max-width:520px; line-height:1.75; }
+
+    /* BIG DASHBOARD VISUAL */
+    .dviz { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+    .dbig { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:24px; box-shadow:0 40px 80px rgba(0,0,0,0.6); }
+    .db-top { display:flex; gap:6px; margin-bottom:18px; }
+    .db-dot { width:10px; height:10px; border-radius:50%; }
+    .db-title { font-size:0.82rem; font-weight:700; margin-bottom:16px; color:var(--muted); }
+    .db-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+    .db-kpi { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:14px; }
+    .db-kpi-v { font-size:1.5rem; font-weight:800; }
+    .db-kpi-l { font-size:0.68rem; color:var(--muted); margin-top:2px; }
+    .db-kpi-d { font-size:0.72rem; margin-top:4px; font-weight:600; }
+    .db-chart-area { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:12px; }
+    .db-line-chart { height:80px; display:flex; align-items:flex-end; gap:4px; }
+    .db-lc-bar { flex:1; border-radius:3px 3px 0 0; }
+    .db-row-cards { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .db-rcard { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:12px; }
+    .db-rcard-h { font-size:0.72rem; color:var(--muted); margin-bottom:8px; }
+    .db-rjack { display:flex; gap:3px; align-items:flex-end; height:40px; }
+    .db-rj { border-radius:2px 2px 0 0; flex:1; }
+
+    .features-info { display:flex; flex-direction:column; gap:24px; }
+    .fi { display:flex; gap:16px; align-items:flex-start; }
+    .fi-ic { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
+    .fi h4 { font-weight:700; font-size:0.95rem; margin-bottom:5px; }
+    .fi p { font-size:0.83rem; color:var(--muted); line-height:1.65; }
+
+    /* FEATURES GRID */
+    .fg { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:52px; }
+    .fc-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:28px; transition:all .3s; }
+    .fc-card:hover { transform:translateY(-4px); border-color:rgba(217,119,6,0.4); box-shadow:0 20px 50px rgba(0,0,0,0.5); }
+    .fci { font-size:1.8rem; margin-bottom:14px; }
+    .fc-card h3 { font-size:0.95rem; font-weight:700; margin-bottom:8px; }
+    .fc-card p { font-size:0.84rem; color:var(--muted); line-height:1.65; }
+
+    /* PRICING */
+    .pgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:52px; }
+    .pc { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:34px; transition:all .3s; }
+    .pc.hot { border-color:var(--amber); background:rgba(217,119,6,0.06); position:relative; }
+    .pc.hot::before { content:'Most Popular'; position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,var(--amber),#f59e0b); color:#000; font-size:0.72rem; font-weight:800; padding:4px 14px; border-radius:100px; white-space:nowrap; }
+    .pc:hover { transform:translateY(-3px); box-shadow:0 20px 50px rgba(0,0,0,0.5); }
+    .pn { font-size:0.83rem; font-weight:600; color:var(--muted); margin-bottom:6px; }
+    .pp { font-size:2.8rem; font-weight:900; letter-spacing:-2px; margin-bottom:4px; }
+    .pp small { font-size:0.88rem; font-weight:400; color:var(--muted); }
+    .pd { font-size:0.82rem; color:var(--muted); margin-bottom:20px; }
+    .pf { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+    .pf li { display:flex; gap:8px; font-size:0.86rem; color:var(--muted); }
+    .pf li::before { content:'✓'; color:var(--amber-light); font-weight:700; flex-shrink:0; }
+    .pb { width:100%; padding:13px; border-radius:10px; font-family:inherit; font-size:0.88rem; font-weight:600; cursor:pointer; transition:all .2s; }
+    .pb-o { background:none; border:1px solid var(--border); color:var(--text); }
+    .pb-o:hover { border-color:var(--amber-light); }
+    .pb-f { background:linear-gradient(135deg,var(--amber),#f59e0b); border:none; color:#000; }
+    .pb-f:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(217,119,6,0.4); }
+
+    /* TESTIMONIALS */
+    .tg { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:52px; }
+    .tc { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:26px; }
+    .tc .stars { color:var(--amber-light); margin-bottom:12px; }
+    .tc p { font-size:0.86rem; color:var(--muted); line-height:1.7; font-style:italic; margin-bottom:18px; }
+    .ta { display:flex; align-items:center; gap:10px; }
+    .ta-av { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; color:#000; font-size:0.85rem; flex-shrink:0; }
+    .ta-n { font-weight:600; font-size:0.86rem; }
+    .ta-r { font-size:0.75rem; color:var(--muted); }
+
+    /* CTA */
+    .cta-s { background:linear-gradient(135deg,rgba(217,119,6,0.14),rgba(225,29,72,0.07)); border:1px solid rgba(217,119,6,0.25); border-radius:24px; padding:80px 5%; text-align:center; }
+    .cta-s h2 { font-size:clamp(2rem,4vw,3.2rem); font-weight:900; letter-spacing:-1px; margin-bottom:14px; }
+    .cta-s p { color:var(--muted); margin-bottom:32px; }
+    .cta-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+
+    footer { border-top:1px solid var(--border); padding:56px 5% 36px; display:grid; grid-template-columns:2fr repeat(3,1fr); gap:36px; }
+    .fb p { color:var(--muted); font-size:0.82rem; line-height:1.7; margin-top:10px; max-width:250px; }
+    .fc h4 { font-size:0.82rem; font-weight:700; margin-bottom:14px; }
+    .fc ul { list-style:none; display:flex; flex-direction:column; gap:9px; }
+    .fc a { color:var(--muted); text-decoration:none; font-size:0.82rem; transition:color .2s; }
+    .fc a:hover { color:var(--text); }
+    .fb-bottom { margin-top:36px; border-top:1px solid var(--border); padding-top:20px; text-align:center; color:var(--muted); font-size:0.78rem; grid-column:1/-1; }
+
+    /* CHATBOT */
+    #dlt {
+      position:fixed; bottom:30px; right:30px; z-index:1000;
+      width:60px; height:60px; border-radius:50%;
+      background:linear-gradient(135deg,var(--amber),#f59e0b);
+      border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 8px 30px rgba(217,119,6,0.5); transition:all .3s; font-size:1.5rem;
+    }
+    #dlt:hover { transform:scale(1.1); box-shadow:0 12px 40px rgba(217,119,6,0.7); }
+    .dp { position:absolute; top:-2px; right:-2px; width:14px; height:14px; border-radius:50%; background:var(--rose-light); border:2px solid var(--bg); animation:dpp 2s infinite; }
+    @keyframes dpp { 0%,100%{opacity:1;}50%{opacity:.4;} }
+
+    #dlbox {
+      position:fixed; bottom:105px; right:30px; z-index:999;
+      width:380px; max-height:580px;
+      background:var(--surface); border:1px solid rgba(217,119,6,0.3); border-radius:20px;
+      display:flex; flex-direction:column; overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,0.6);
+      transform:scale(0.8) translateY(20px); opacity:0;
+      transition:all .3s cubic-bezier(0.34,1.56,0.64,1);
+      pointer-events:none;
+    }
+    #dlbox.open { transform:scale(1) translateY(0); opacity:1; pointer-events:all; }
+
+    .dlh { padding:18px 18px 14px; background:linear-gradient(135deg,rgba(217,119,6,0.15),rgba(225,29,72,0.07)); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
+    .dlav { width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg,var(--amber),var(--rose)); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+    .dlhi h3 { font-size:0.95rem; font-weight:700; }
+    .dlhi p { font-size:0.73rem; color:var(--amber-light); }
+    .dlcl { margin-left:auto; background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1rem; transition:color .2s; }
+    .dlcl:hover { color:var(--text); }
+
+    .dlmsgs { flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:12px; scroll-behavior:smooth; }
+    .dlmsgs::-webkit-scrollbar { width:4px; }
+    .dlmsgs::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+    .dm { max-width:85%; animation:dmi .3s ease; }
+    @keyframes dmi { from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);} }
+    .dm.bot { align-self:flex-start; }
+    .dm.user { align-self:flex-end; }
+    .db-b { padding:11px 14px; border-radius:14px; font-size:0.85rem; line-height:1.6; }
+    .dm.bot .db-b { background:var(--surface2); border:1px solid var(--border); border-bottom-left-radius:4px; }
+    .dm.user .db-b { background:linear-gradient(135deg,var(--amber),#f59e0b); color:#000; border-bottom-right-radius:4px; }
+
+    .dlqr { padding:0 14px 10px; display:flex; flex-wrap:wrap; gap:8px; }
+    .dlq { background:rgba(217,119,6,0.1); border:1px solid rgba(217,119,6,0.3); color:var(--amber-light); padding:5px 12px; border-radius:100px; font-size:0.75rem; cursor:pointer; transition:all .2s; font-family:inherit; }
+    .dlq:hover { background:rgba(217,119,6,0.25); }
+
+    .dlca { padding:14px; border-top:1px solid var(--border); display:flex; gap:10px; align-items:flex-end; }
+    #dl-in { flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:11px 13px; color:var(--text); font-family:inherit; font-size:0.85rem; resize:none; min-height:42px; max-height:120px; outline:none; transition:border-color .2s; }
+    #dl-in:focus { border-color:var(--amber); }
+    #dl-in::placeholder { color:var(--muted); }
+    #dl-send { background:linear-gradient(135deg,var(--amber),#f59e0b); border:none; border-radius:9px; width:42px; height:42px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0; }
+    #dl-send:hover { transform:scale(1.05); }
+    #dl-send svg { fill:#000; }
+
+    .dlty { display:flex; align-items:center; gap:4px; padding:11px 14px; background:var(--surface2); border-radius:14px; border-bottom-left-radius:4px; border:1px solid var(--border); width:fit-content; }
+    .dlty span { width:6px; height:6px; border-radius:50%; background:var(--muted); animation:dltd 1.3s infinite; }
+    .dlty span:nth-child(2){animation-delay:.2s;}.dlty span:nth-child(3){animation-delay:.4s;}
+    @keyframes dltd { 0%,60%,100%{opacity:.2;transform:scale(1);}30%{opacity:1;transform:scale(1.3);} }
+
+    @media(max-width:768px) { .dviz{grid-template-columns:1fr;} .fg{grid-template-columns:1fr;} .pgrid{grid-template-columns:1fr;} .tg{grid-template-columns:1fr;} footer{grid-template-columns:1fr 1fr;} .nav-links{display:none;} #dlbox{width:calc(100vw - 40px);right:20px;} }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><span class="d">Data</span>Lens</div>
+  <ul class="nav-links">
+    <li><a href="#dashboard">Dashboard</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+  </ul>
+  <div class="nav-cta">
+    <button class="btn-g">Sign In</button>
+    <button class="btn-p">Try for Free</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="badge">📈 New: Predictive AI Forecasting is live</div>
+  <h1>Turn data into<br /><span class="gr">decisions that win</span></h1>
+  <p class="hero-sub">DataLens connects to any data source, builds beautiful dashboards in minutes, and uses AI to surface the insights that actually move your business forward.</p>
+  <div class="hero-actions">
+    <button class="btn-hm">Start Free — No Credit Card</button>
+    <button class="btn-ho">▶ Live Demo</button>
+  </div>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-n">30K+</div><div class="hs-l">Companies using DataLens</div></div>
+    <div class="hs"><div class="hs-n">500+</div><div class="hs-l">Data connectors</div></div>
+    <div class="hs"><div class="hs-n">2.1B</div><div class="hs-l">Queries processed/day</div></div>
+    <div class="hs"><div class="hs-n">99.9%</div><div class="hs-l">Uptime SLA</div></div>
+  </div>
+</section>
+
+<section id="dashboard">
+  <div class="dviz">
+    <div>
+      <div class="st">Live Analytics</div>
+      <div class="stit">Dashboards that<br />actually make sense</div>
+      <p class="ssub" style="margin-top:12px;">No SQL, no data science degree required. Connect your data, ask in plain English, and get beautiful, shareable dashboards in minutes.</p>
+      <div class="features-info" style="margin-top:32px">
+        <div class="fi">
+          <div class="fi-ic" style="background:rgba(217,119,6,0.15)">🔍</div>
+          <div><h4>Ask Data Anything</h4><p>Type a question like "What's our MRR trend by region?" and get an instant, interactive chart. No code, ever.</p></div>
+        </div>
+        <div class="fi">
+          <div class="fi-ic" style="background:rgba(225,29,72,0.12)">⚡</div>
+          <div><h4>Real-Time Streaming</h4><p>Sub-second query performance on billion-row datasets. Your dashboards update live as data flows in.</p></div>
+        </div>
+        <div class="fi">
+          <div class="fi-ic" style="background:rgba(34,211,238,0.1)">🔮</div>
+          <div><h4>AI Forecasting</h4><p>Predictive models built automatically from your historical data. See where you're headed before it happens.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="dbig">
+      <div class="db-top"><div class="db-dot" style="background:#ef4444"></div><div class="db-dot" style="background:#f59e0b"></div><div class="db-dot" style="background:#22c55e"></div></div>
+      <div class="db-title">Business Overview — Real Time</div>
+      <div class="db-kpis">
+        <div class="db-kpi"><div class="db-kpi-v" style="color:var(--amber-light)">$2.4M</div><div class="db-kpi-l">Monthly Revenue</div><div class="db-kpi-d" style="color:#4ade80">↑ +18.3%</div></div>
+        <div class="db-kpi"><div class="db-kpi-v" style="color:var(--rose-light)">1,247</div><div class="db-kpi-l">Active Users</div><div class="db-kpi-d" style="color:#4ade80">↑ +22.1%</div></div>
+        <div class="db-kpi"><div class="db-kpi-v" style="color:#60a5fa">94.2%</div><div class="db-kpi-l">Retention</div><div class="db-kpi-d" style="color:#4ade80">↑ +2.4%</div></div>
+      </div>
+      <div class="db-chart-area">
+        <div style="font-size:0.7rem;color:var(--muted);margin-bottom:8px;">Revenue Trend</div>
+        <div class="db-line-chart">
+          <div class="db-lc-bar" style="height:40%;background:var(--amber);opacity:0.6;"></div>
+          <div class="db-lc-bar" style="height:55%;background:var(--amber);opacity:0.7;"></div>
+          <div class="db-lc-bar" style="height:50%;background:var(--amber);opacity:0.7;"></div>
+          <div class="db-lc-bar" style="height:65%;background:var(--amber);opacity:0.8;"></div>
+          <div class="db-lc-bar" style="height:70%;background:var(--amber);opacity:0.8;"></div>
+          <div class="db-lc-bar" style="height:60%;background:var(--amber);opacity:0.8;"></div>
+          <div class="db-lc-bar" style="height:80%;background:var(--amber);opacity:0.9;"></div>
+          <div class="db-lc-bar" style="height:75%;background:var(--amber);opacity:0.9;"></div>
+          <div class="db-lc-bar" style="height:90%;background:var(--amber);"></div>
+          <div class="db-lc-bar" style="height:85%;background:var(--amber);"></div>
+          <div class="db-lc-bar" style="height:100%;background:linear-gradient(180deg,var(--amber-light),var(--amber));"></div>
+          <div class="db-lc-bar" style="height:95%;background:linear-gradient(180deg,var(--amber-light),var(--amber));border:1px solid var(--amber-light);"></div>
+        </div>
+      </div>
+      <div class="db-row-cards">
+        <div class="db-rcard">
+          <div class="db-rcard-h">Conversion by Channel</div>
+          <div class="db-rjack">
+            <div class="db-rj" style="height:80%;background:var(--rose);border-radius:3px 3px 0 0;"></div>
+            <div class="db-rj" style="height:60%;background:var(--rose);opacity:0.7;border-radius:3px 3px 0 0;"></div>
+            <div class="db-rj" style="height:40%;background:var(--rose);opacity:0.5;border-radius:3px 3px 0 0;"></div>
+            <div class="db-rj" style="height:90%;background:var(--rose);opacity:0.9;border-radius:3px 3px 0 0;"></div>
+            <div class="db-rj" style="height:50%;background:var(--rose);opacity:0.6;border-radius:3px 3px 0 0;"></div>
+          </div>
+        </div>
+        <div class="db-rcard">
+          <div class="db-rcard-h">Pipeline Forecast (AI)</div>
+          <div style="padding-top:6px">
+            <div style="display:flex;justify-content:space-between;font-size:0.68rem;color:var(--muted);margin-bottom:5px;"><span>Current</span><span style="color:var(--amber-light)">$2.4M</span></div>
+            <div style="height:6px;background:var(--surface);border-radius:3px;margin-bottom:8px;"><div style="width:65%;height:100%;background:linear-gradient(90deg,var(--amber),var(--amber-light));border-radius:3px;"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.68rem;color:var(--muted);margin-bottom:5px;"><span>Forecast</span><span style="color:#4ade80">$3.1M</span></div>
+            <div style="height:6px;background:var(--surface);border-radius:3px;"><div style="width:84%;height:100%;background:linear-gradient(90deg,#4ade80,#22c55e);border-radius:3px;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features" style="background:linear-gradient(180deg,transparent,rgba(217,119,6,0.03));">
+  <div style="text-align:center">
+    <div class="st" style="text-align:center">All Features</div>
+    <div class="stit">Built for data teams that move fast</div>
+  </div>
+  <div class="fg">
+    <div class="fc-card"><div class="fci">🤖</div><h3>AI Query Engine</h3><p>Ask business questions in plain English. DataLens AI understands your data model and generates perfect SQL, charts, and insights instantly.</p></div>
+    <div class="fc-card"><div class="fci">🔌</div><h3>500+ Connectors</h3><p>Connect to Snowflake, BigQuery, Redshift, Postgres, Stripe, Salesforce, HubSpot, Google Analytics, and 490+ more in minutes.</p></div>
+    <div class="fc-card"><div class="fci">📊</div><h3>50+ Chart Types</h3><p>From standard bar charts to advanced Sankey diagrams, geospatial maps, and custom D3 visualizations. Drag. Drop. Done.</p></div>
+    <div class="fc-card"><div class="fci">🔔</div><h3>Smart Alerts</h3><p>Set threshold-based or anomaly-detection alerts. Get notified via Slack, email, or PagerDuty the moment metrics behave unexpectedly.</p></div>
+    <div class="fc-card"><div class="fci">🔒</div><h3>Row-Level Security</h3><p>Granular data access controls. Show each team only the data they're allowed to see — without maintaining 50 separate dashboards.</p></div>
+    <div class="fc-card"><div class="fci">🚀</div><h3>Embedded Analytics</h3><p>White-label DataLens and embed analytics directly in your product. Give your customers the data experience they deserve.</p></div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div style="text-align:center">
+    <div class="st" style="text-align:center">Pricing</div>
+    <div class="stit">Insights for every team size</div>
+    <p style="color:var(--muted);margin-top:8px;font-size:0.95rem;">All plans include unlimited dashboards. Cancel anytime.</p>
+  </div>
+  <div class="pgrid">
+    <div class="pc">
+      <div class="pn">Starter</div>
+      <div class="pp">$49<small>/mo</small></div>
+      <div class="pd">For small teams getting data-driven</div>
+      <ul class="pf"><li>5 users</li><li>10 data sources</li><li>Real-time dashboards</li><li>Basic AI insights</li><li>Email support</li></ul>
+      <button class="pb pb-o">Start Free Trial</button>
+    </div>
+    <div class="pc hot">
+      <div class="pn">Business</div>
+      <div class="pp">$199<small>/mo</small></div>
+      <div class="pd">For teams that run on data</div>
+      <ul class="pf"><li>25 users</li><li>Unlimited sources</li><li>AI query engine</li><li>Predictive forecasting</li><li>Smart alerts</li><li>Row-level security</li></ul>
+      <button class="pb pb-f">Start Free Trial</button>
+    </div>
+    <div class="pc">
+      <div class="pn">Enterprise</div>
+      <div class="pp">Custom</div>
+      <div class="pd">For data-first organizations</div>
+      <ul class="pf"><li>Unlimited users</li><li>Custom AI models</li><li>Embedded analytics</li><li>SSO + SAML</li><li>Dedicated support</li><li>On-prem option</li></ul>
+      <button class="pb pb-o">Talk to Sales</button>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div style="text-align:center">
+    <div class="st" style="text-align:center">Reviews</div>
+    <div class="stit">Data teams love DataLens</div>
+  </div>
+  <div class="tg">
+    <div class="tc">
+      <div class="stars">★★★★★</div>
+      <p>"We replaced Tableau and Mode with DataLens. Setup was 10x faster and the AI query assistant is something we didn't know we needed until now."</p>
+      <div class="ta"><div class="ta-av" style="background:linear-gradient(135deg,var(--amber),var(--amber-light))">K</div><div><div class="ta-n">Kevin Zhou</div><div class="ta-r">Head of Data, Acme Corp</div></div></div>
+    </div>
+    <div class="tc">
+      <div class="stars">★★★★★</div>
+      <p>"The embedded analytics feature is game-changing for us. Our customers now have beautiful dashboards inside our product. Churn dropped 30%."</p>
+      <div class="ta"><div class="ta-av" style="background:linear-gradient(135deg,var(--rose),var(--amber))">F</div><div><div class="ta-n">Fatima Al-Hassan</div><div class="ta-r">CTO, InsightFlow</div></div></div>
+    </div>
+    <div class="tc">
+      <div class="stars">★★★★★</div>
+      <p>"Non-technical stakeholders can now build their own reports. We went from 200 requests/month to our data team to under 20. Incredible ROI."</p>
+      <div class="ta"><div class="ta-av" style="background:linear-gradient(135deg,#3b82f6,var(--amber))">T</div><div><div class="ta-n">Tom Erikson</div><div class="ta-r">Analytics VP, NordBank</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="cta-s">
+    <h2>Ready to become a<br /><span style="color:var(--amber-light)">data-driven company?</span></h2>
+    <p>Start your 14-day free trial. Connect your first data source in under 5 minutes.</p>
+    <div class="cta-btns">
+      <button class="btn-hm">Start Free Trial →</button>
+      <button class="btn-ho" style="border-color:rgba(217,119,6,0.4)">View Live Demo</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fb">
+    <div class="logo"><span class="d">Data</span>Lens</div>
+    <p>The modern business intelligence platform for teams who love their data.</p>
+  </div>
+  <div class="fc"><h4>Product</h4><ul><li><a href="#">Features</a></li><li><a href="#">Pricing</a></li><li><a href="#">Connectors</a></li><li><a href="#">API</a></li></ul></div>
+  <div class="fc"><h4>Resources</h4><ul><li><a href="#">Docs</a></li><li><a href="#">Blog</a></li><li><a href="#">Tutorials</a></li><li><a href="#">Community</a></li></ul></div>
+  <div class="fc"><h4>Legal</h4><ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Security</a></li><li><a href="#">DPA</a></li></ul></div>
+  <div class="fb-bottom">© 2024 DataLens Inc. All rights reserved.</div>
+</footer>
+
+<button id="dlt" onclick="toggleDL()" style="position:fixed">
+  📊
+  <div class="dp"></div>
+</button>
+
+<div id="dlbox">
+  <div class="dlh">
+    <div class="dlav">🤖</div>
+    <div class="dlhi">
+      <h3>DataLens AI Assistant</h3>
+      <p>● Online — powered by Kimi K2</p>
+    </div>
+    <button class="dlcl" onclick="toggleDL()">✕</button>
+  </div>
+  <div class="dlmsgs" id="dl-msgs">
+    <div class="dm bot">
+      <div class="db-b">📊 Hi! I'm the DataLens AI assistant. I can help you understand our analytics platform, find the right plan for your team, or answer any data intelligence questions. What would you like to know?</div>
+    </div>
+  </div>
+  <div class="dlqr" id="dl-qr">
+    <button class="dlq" onclick="dlQ('How does the AI query engine work?')">AI Queries</button>
+    <button class="dlq" onclick="dlQ('What data sources can I connect?')">Connectors</button>
+    <button class="dlq" onclick="dlQ('Tell me about pricing')">Pricing</button>
+    <button class="dlq" onclick="dlQ('How does embedded analytics work?')">Embedded BI</button>
+  </div>
+  <div class="dlca">
+    <textarea id="dl-in" placeholder="Ask about DataLens..." rows="1" onkeydown="dlKey(event)" oninput="dlResize(this)"></textarea>
+    <button id="dl-send" onclick="dlSend()">
+      <svg width="16" height="16" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  const DL_KEY = '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';
+  const DL_URL = '/api/chat';
+  const DL_MODEL = 'moonshotai/kimi-k2-instruct';
+
+  const DL_SYS = `You are DataLens AI, the assistant for DataLens — a premium Business Intelligence & Analytics SaaS platform.
+
+DataLens features:
+- AI Query Engine: Ask data questions in plain English, get charts & SQL instantly
+- 500+ connectors (Snowflake, BigQuery, Redshift, Stripe, Salesforce, Google Analytics, etc.)
+- 50+ chart types including Sankey, geospatial maps, custom D3
+- Smart Alerts: threshold & anomaly-detection alerts via Slack, email, PagerDuty
+- Row-Level Security: granular data access controls
+- Embedded Analytics: white-label BI in your product
+- Real-time streaming with sub-second query performance on billion-row datasets
+- Predictive AI forecasting built automatically from historical data
+
+Pricing:
+- Starter: $49/mo — 5 users, 10 sources, basic AI
+- Business: $199/mo — 25 users, unlimited sources, full AI, forecasting, smart alerts, row-level security
+- Enterprise: Custom — unlimited, custom AI, embedded analytics, SSO, on-prem
+
+Stats: 30K+ companies, 500+ connectors, 2.1B queries/day, 99.9% uptime SLA.
+
+Be knowledgeable, data-savvy, and concise. Emphasize the ease of use (no SQL required), the AI capabilities, and the business ROI. Keep responses to 2-3 sentences unless more is needed. Encourage free trial.`;
+
+  let dlHistory = [];
+  let dlOpen = false;
+
+  function toggleDL() {
+    dlOpen = !dlOpen;
+    document.getElementById('dlbox').classList.toggle('open', dlOpen);
+    document.getElementById('dlt').innerHTML = (dlOpen ? '✕' : '📊') + '<div class="dp"></div>';
+  }
+
+  function dlKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); dlSend(); } }
+  function dlResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
+  function dlQ(t) { document.getElementById('dl-in').value = t; dlSend(); document.getElementById('dl-qr').style.display = 'none'; }
+
+  function dlAppend(role, text) {
+    const d = document.createElement('div');
+    d.className = `dm ${role}`;
+    d.innerHTML = `<div class="db-b">${text.replace(/\n/g,'<br>')}</div>`;
+    const msgs = document.getElementById('dl-msgs');
+    msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function dlTyping(show) {
+    const ex = document.getElementById('dl-typing');
+    if (show && !ex) {
+      const t = document.createElement('div'); t.className = 'dm bot'; t.id = 'dl-typing';
+      t.innerHTML = '<div class="dlty"><span></span><span></span><span></span></div>';
+      const msgs = document.getElementById('dl-msgs'); msgs.appendChild(t); msgs.scrollTop = msgs.scrollHeight;
+    } else if (!show && ex) ex.remove();
+  }
+
+  async function dlSend() {
+    const input = document.getElementById('dl-in');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = ''; input.style.height = 'auto';
+    dlAppend('user', text);
+    dlHistory.push({ role: 'user', content: text });
+    dlTyping(true);
+    try {
+      const r = await fetch(DL_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apiKey: DL_KEY, model: DL_MODEL, messages: [{ role: 'system', content: DL_SYS }, ...dlHistory], temperature: 0.7, max_tokens: 300 })
+      });
+      const d = await r.json();
+      dlTyping(false);
+      if (d.choices?.[0]) { const rep = d.choices[0].message.content; dlHistory.push({ role: 'assistant', content: rep }); dlAppend('bot', rep); }
+      else dlAppend('bot', "I'm having a moment — try again! 📊");
+    } catch { dlTyping(false); dlAppend('bot', "Connection hiccup — please try again!"); }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SaaS Portfolio Showcase — Agency-Grade Sample Websites</title>
+  <meta name="description" content="4 premium SaaS website samples built for client presentations. Each includes a fully integrated AI chatbot powered by NVIDIA NIM Kimi K2." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #06060a; --surface: #0f0f18; --surface2: #18182a;
+      --border: rgba(255,255,255,0.07); --text: #f8fafc; --muted: #94a3b8;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 5% 60px; position: relative; overflow: hidden; }
+    .hero::before { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,0.15) 0%, transparent 60%); pointer-events:none; }
+    .top-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 7px 18px; border-radius: 100px; font-size: 0.8rem; color: var(--muted); margin-bottom: 32px; font-weight: 500; }
+    .top-badge span { color: #a78bfa; }
+    h1 { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900; line-height: 1.08; letter-spacing: -2px; margin-bottom: 20px; }
+    h1 .g1 { background: linear-gradient(135deg, #a78bfa, #ec4899, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { font-size: 1.1rem; color: var(--muted); max-width: 600px; line-height: 1.8; margin-bottom: 48px; }
+    .hero-tags { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 56px; }
+    .tag { background: var(--surface); border: 1px solid var(--border); padding: 6px 14px; border-radius: 8px; font-size: 0.78rem; color: var(--muted); }
+    .scroll-hint { color: var(--muted); font-size: 0.82rem; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .scroll-arrow { font-size: 1.2rem; animation: bounce 2s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateY(0);}50%{transform:translateY(6px);} }
+
+    /* SAMPLES */
+    .samples { padding: 0 5% 100px; }
+    .samples-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; max-width: 1100px; margin: 0 auto; }
+
+    /* Card is a full <a> tag — entire area is clickable, no popup blocking */
+    .sample-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: var(--surface); border-radius: 20px; overflow: hidden;
+      border: 1px solid var(--border); transition: all .35s;
+      position: relative;
+    }
+    .sample-card:hover { transform: translateY(-6px); box-shadow: 0 30px 80px rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.14); }
+
+    .sample-preview { height: 220px; position: relative; overflow: hidden; }
+    .preview-mock { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 16px; gap: 8px; }
+    .pm-nav { height: 28px; border-radius: 6px; opacity: 0.6; }
+    .pm-hero { flex: 1; border-radius: 8px; opacity: 0.3; }
+    .pm-cards { display: flex; gap: 8px; }
+    .pm-card { flex: 1; height: 40px; border-radius: 6px; opacity: 0.4; }
+    .preview-overlay {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: all .3s; backdrop-filter: blur(4px);
+    }
+    .sample-card:hover .preview-overlay { opacity: 1; }
+    .preview-btn {
+      background: rgba(255,255,255,0.95); color: #000; font-weight: 700; font-size: 0.9rem;
+      padding: 12px 28px; border-radius: 10px; border: none; cursor: pointer; font-family: inherit;
+      pointer-events: none; /* card handles click, button is visual only */
+    }
+
+    .sample-info { padding: 24px; }
+    .sample-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .sample-niche { font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+    .sample-name { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .sample-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+    .sample-features { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+    .sf { background: var(--surface2); border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px; font-size: 0.73rem; color: var(--muted); }
+    .sample-cta { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--border); }
+    .cta-label { font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 6px; transition: gap .2s; }
+    .sample-card:hover .cta-label { gap: 10px; }
+    .ai-badge { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--muted); }
+    .ai-dot { width: 6px; height: 6px; border-radius: 50%; animation: aip 2s infinite; }
+    @keyframes aip { 0%,100%{opacity:1;}50%{opacity:.3;} }
+
+    /* FEATURES SHOWCASE */
+    .features-section { padding: 80px 5%; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .fs-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 1100px; margin: 48px auto 0; }
+    .fs-card { padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--bg); }
+    .fs-icon { font-size: 1.6rem; margin-bottom: 12px; }
+    .fs-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .fs-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+    .section-header { max-width: 1100px; margin: 0 auto; }
+    .sh-tag { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .sh-title { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; }
+
+    /* FOOTER */
+    footer { padding: 48px 5%; text-align: center; border-top: 1px solid var(--border); }
+    footer p { color: var(--muted); font-size: 0.85rem; line-height: 1.8; }
+
+    @media(max-width:768px) {
+      .samples-grid { grid-template-columns: 1fr; }
+      .fs-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="top-badge"><span>✦</span> Built with NVIDIA NIM · Kimi K2 AI <span>✦</span></div>
+  <h1>Agency-Grade<br /><span class="g1">SaaS Websites</span><br />Ready to Impress Clients</h1>
+  <p>4 fully functional, premium-quality SaaS website samples built for client presentations. Each includes a live AI chatbot powered by Kimi K2 via NVIDIA NIM.</p>
+  <div class="hero-tags">
+    <span class="tag">🤖 Live AI Chatbot</span>
+    <span class="tag">📱 Fully Responsive</span>
+    <span class="tag">🎨 Premium Design</span>
+    <span class="tag">⚡ Zero Dependencies</span>
+    <span class="tag">🚀 Client-Ready</span>
+    <span class="tag">✨ Dark Mode</span>
+  </div>
+  <div class="scroll-hint">
+    <span>Explore samples below</span>
+    <span class="scroll-arrow">↓</span>
+  </div>
+</section>
+
+<div class="samples">
+  <div class="samples-grid">
+
+    <!-- FlowDesk — entire card is an <a> tag, no popup blocking -->
+    <a class="sample-card" href="/flowdesk">
+      <div class="sample-preview" style="background:linear-gradient(135deg,#09090f 0%,#1a0a2e 100%);">
+        <div class="preview-mock">
+          <div class="pm-nav" style="background:linear-gradient(90deg,#7c3aed,#ec4899);"></div>
+          <div class="pm-hero" style="background:linear-gradient(135deg,rgba(124,58,237,0.3),rgba(236,72,153,0.2));"></div>
+          <div class="pm-cards">
+            <div class="pm-card" style="background:rgba(124,58,237,0.4);"></div>
+            <div class="pm-card" style="background:rgba(236,72,153,0.3);"></div>
+            <div class="pm-card" style="background:rgba(249,115,22,0.3);"></div>
+          </div>
+        </div>
+        <div class="preview-overlay" style="background:rgba(124,58,237,0.3);">
+          <button class="preview-btn">Open FlowDesk →</button>
+        </div>
+      </div>
+      <div class="sample-info">
+        <div class="sample-icon">⚡</div>
+        <div class="sample-niche" style="color:#a78bfa">Project Management</div>
+        <div class="sample-name">FlowDesk</div>
+        <div class="sample-desc">AI-powered project management for modern teams. Dark violet/pink theme with glassmorphism, animated stats, feature cards, and pricing.</div>
+        <div class="sample-features">
+          <span class="sf">Violet Theme</span><span class="sf">Hero Stats</span><span class="sf">Feature Cards</span>
+          <span class="sf">3-Tier Pricing</span><span class="sf">Testimonials</span><span class="sf">AI Chat</span>
+        </div>
+        <div class="sample-cta">
+          <span class="cta-label" style="color:#a78bfa">View Demo <span>→</span></span>
+          <div class="ai-badge"><div class="ai-dot" style="background:#a78bfa"></div>FlowAI — Kimi K2</div>
+        </div>
+      </div>
+    </a>
+
+    <!-- NexusCRM -->
+    <a class="sample-card" href="/nexuscrm">
+      <div class="sample-preview" style="background:linear-gradient(135deg,#030712 0%,#0a1428 100%);">
+        <div class="preview-mock">
+          <div class="pm-nav" style="background:linear-gradient(90deg,#2563eb,#1d4ed8);"></div>
+          <div class="pm-hero" style="background:linear-gradient(135deg,rgba(37,99,235,0.3),rgba(249,115,22,0.2));"></div>
+          <div class="pm-cards">
+            <div class="pm-card" style="background:rgba(37,99,235,0.5);"></div>
+            <div class="pm-card" style="background:rgba(249,115,22,0.4);"></div>
+            <div class="pm-card" style="background:rgba(34,197,94,0.35);"></div>
+          </div>
+        </div>
+        <div class="preview-overlay" style="background:rgba(37,99,235,0.3);">
+          <button class="preview-btn">Open NexusCRM →</button>
+        </div>
+      </div>
+      <div class="sample-info">
+        <div class="sample-icon">💼</div>
+        <div class="sample-niche" style="color:#60a5fa">Sales CRM</div>
+        <div class="sample-name">NexusCRM</div>
+        <div class="sample-desc">AI sales intelligence platform. Blue/orange theme with live pipeline visualization, deal cards, metrics strip, and conversion-focused CTAs.</div>
+        <div class="sample-features">
+          <span class="sf">Blue Theme</span><span class="sf">Pipeline Visual</span><span class="sf">Metrics Strip</span>
+          <span class="sf">Trust Logos</span><span class="sf">Email CTA</span><span class="sf">AI Chat</span>
+        </div>
+        <div class="sample-cta">
+          <span class="cta-label" style="color:#60a5fa">View Demo <span>→</span></span>
+          <div class="ai-badge"><div class="ai-dot" style="background:#60a5fa"></div>NexusAI — Kimi K2</div>
+        </div>
+      </div>
+    </a>
+
+    <!-- PulseHR -->
+    <a class="sample-card" href="/pulsehr">
+      <div class="sample-preview" style="background:linear-gradient(135deg,#020c0a 0%,#071a10 100%);">
+        <div class="preview-mock">
+          <div class="pm-nav" style="background:linear-gradient(90deg,#059669,#0d9488);"></div>
+          <div class="pm-hero" style="background:linear-gradient(135deg,rgba(5,150,105,0.3),rgba(13,148,136,0.2));"></div>
+          <div class="pm-cards">
+            <div class="pm-card" style="background:rgba(5,150,105,0.5);"></div>
+            <div class="pm-card" style="background:rgba(34,211,238,0.35);"></div>
+            <div class="pm-card" style="background:rgba(124,58,237,0.3);"></div>
+          </div>
+        </div>
+        <div class="preview-overlay" style="background:rgba(5,150,105,0.3);">
+          <button class="preview-btn">Open PulseHR →</button>
+        </div>
+      </div>
+      <div class="sample-info">
+        <div class="sample-icon">🌿</div>
+        <div class="sample-niche" style="color:#34d399">HR & People Analytics</div>
+        <div class="sample-name">PulseHR</div>
+        <div class="sample-desc">Modern HR platform with AI recruiting. Emerald/teal theme with a live analytics dashboard mockup, social proof bar, and per-employee pricing.</div>
+        <div class="sample-features">
+          <span class="sf">Emerald Theme</span><span class="sf">Analytics Visual</span><span class="sf">Social Proof</span>
+          <span class="sf">Per-Seat Pricing</span><span class="sf">Grid Lines</span><span class="sf">AI Chat</span>
+        </div>
+        <div class="sample-cta">
+          <span class="cta-label" style="color:#34d399">View Demo <span>→</span></span>
+          <div class="ai-badge"><div class="ai-dot" style="background:#34d399"></div>PulseAI — Kimi K2</div>
+        </div>
+      </div>
+    </a>
+
+    <!-- DataLens -->
+    <a class="sample-card" href="/datalens">
+      <div class="sample-preview" style="background:linear-gradient(135deg,#0c0a00 0%,#1a1200 100%);">
+        <div class="preview-mock">
+          <div class="pm-nav" style="background:linear-gradient(90deg,#d97706,#f59e0b);"></div>
+          <div class="pm-hero" style="background:linear-gradient(135deg,rgba(217,119,6,0.3),rgba(225,29,72,0.2));"></div>
+          <div class="pm-cards">
+            <div class="pm-card" style="background:rgba(217,119,6,0.6);"></div>
+            <div class="pm-card" style="background:rgba(225,29,72,0.4);"></div>
+            <div class="pm-card" style="background:rgba(96,165,250,0.35);"></div>
+          </div>
+        </div>
+        <div class="preview-overlay" style="background:rgba(217,119,6,0.25);">
+          <button class="preview-btn">Open DataLens →</button>
+        </div>
+      </div>
+      <div class="sample-info">
+        <div class="sample-icon">📊</div>
+        <div class="sample-niche" style="color:#fbbf24">Business Intelligence</div>
+        <div class="sample-name">DataLens</div>
+        <div class="sample-desc">AI-powered BI & analytics platform. Amber/rose dark theme with an interactive data dashboard, KPI cards, charts, and AI forecast visualization.</div>
+        <div class="sample-features">
+          <span class="sf">Amber Theme</span><span class="sf">BI Dashboard</span><span class="sf">KPI Cards</span>
+          <span class="sf">Bar Charts</span><span class="sf">500+ Connectors</span><span class="sf">AI Chat</span>
+        </div>
+        <div class="sample-cta">
+          <span class="cta-label" style="color:#fbbf24">View Demo <span>→</span></span>
+          <div class="ai-badge"><div class="ai-dot" style="background:#fbbf24"></div>DataLens AI — Kimi K2</div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<div class="features-section">
+  <div class="section-header">
+    <div class="sh-tag">What's Included</div>
+    <div class="sh-title">Every sample ships with these features</div>
+  </div>
+  <div class="fs-grid">
+    <div class="fs-card"><div class="fs-icon">🤖</div><div class="fs-title">Live AI Chatbot</div><div class="fs-desc">Each site has a fully functional AI assistant via NVIDIA NIM (Kimi K2 Instruct). Chat history, typing indicators, quick replies — all included.</div></div>
+    <div class="fs-card"><div class="fs-icon">🎨</div><div class="fs-title">Premium Design System</div><div class="fs-desc">Unique color palette, typography, glassmorphism, gradients, and micro-animations per brand. Zero templates — all custom CSS.</div></div>
+    <div class="fs-card"><div class="fs-icon">📱</div><div class="fs-title">Fully Responsive</div><div class="fs-desc">Mobile-first grids, hidden nav on mobile, adaptive chatbot sizing. Looks great on any screen size.</div></div>
+    <div class="fs-card"><div class="fs-icon">🔐</div><div class="fs-title">Secure by Design</div><div class="fs-desc">API key lives only on the server — never exposed in client code. The proxy pattern keeps credentials safe from browser inspection.</div></div>
+    <div class="fs-card"><div class="fs-icon">🏗️</div><div class="fs-title">Complete Page Structure</div><div class="fs-desc">Nav, Hero, Features, How It Works, Pricing, Testimonials, CTA, and Footer. Everything a real SaaS landing page needs to convert.</div></div>
+    <div class="fs-card"><div class="fs-icon">💬</div><div class="fs-title">Context-Aware Bot</div><div class="fs-desc">Each chatbot has a custom system prompt tailored to its SaaS product — pricing, features, objections handled intelligently.</div></div>
+    <div class="fs-card"><div class="fs-icon">🔍</div><div class="fs-title">SEO Optimized</div><div class="fs-desc">Proper title tags, meta descriptions, semantic HTML5, heading hierarchy, and all best practices built in from the start.</div></div>
+    <div class="fs-card"><div class="fs-icon">🚀</div><div class="fs-title">Client-Ready</div><div class="fs-desc">Realistic product names, compelling copy, social proof, and premium aesthetics that match $10K–$50K agency-built sites.</div></div>
+  </div>
+</div>
+
+<footer>
+  <p>Built with ❤️ using <strong>NVIDIA NIM</strong> · <strong>Kimi K2 Instruct</strong> · API key secured server-side</p>
+  <p style="margin-top:8px">4 samples · 4 niches · 4 unique designs · 1 powerful AI backend</p>
+</footer>
+
+</body>
+</html>
